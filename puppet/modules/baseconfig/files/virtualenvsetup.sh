@@ -35,7 +35,8 @@ inveniomanage config set CFG_DATABASE_USER invenio
 inveniomanage config set PACKAGES "['invenio_demosite', 'invenio.modules.*']"
 npm install || die 1 "npm install failed"
 bower install || die 1 "bower install failed"
-grunt build --path=../../var/invenio.base-instance/static || die 1 "grunt build failed"
+# dirname pwd because we are in a symlink here.
+grunt build --path=`dirname pwd`/../var/invenio.base-instance/static || die 1 "grunt build failed"
 
 cd ../..
 mkdir -p var/run
@@ -44,3 +45,12 @@ mkdir -p var/tmp-shared
 cd src/demosite
 
 pip install -e . --allow-all-external
+
+cd ../invenio
+inveniomanage database init --yes-i-know --user=root --password=invenio
+inveniomanage database create
+inveniomanage demosite create
+inveniomanage runserver &
+inveniomanage demosite populate
+redis-cli flushdb
+fg
