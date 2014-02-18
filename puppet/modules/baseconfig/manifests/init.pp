@@ -4,7 +4,10 @@ class baseconfig {
 #        "gem update": command => "/opt/vagrant_ruby/bin/gem update";
     }
 
-    package { "vim": ensure => "present"; }
+    package {
+        "git": ensure => "present";
+        "vim": ensure => "present";
+    }
 
     file {
         "/home/vagrant/.bashrc":
@@ -12,5 +15,12 @@ class baseconfig {
         group => "vagrant",
         mode => "0644",
         source => "puppet:///modules/baseconfig/bashrc"
+    } ->
+    file {
+        "/home/vagrant/virtualenvsetup.sh":
+        owner => "vagrant",
+        group => "vagrant",
+        mode => "0755",
+        source => "puppet:///modules/baseconfig/virtualenvsetup.sh"
     }
 }

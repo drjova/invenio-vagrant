@@ -34,5 +34,15 @@ node default {
         password => "my123p\$ss",
         host => "localhost",
         grant => ["ALL"]
+    } ->
+    exec { "virtualenvsetup.sh":
+        cwd => "/home/vagrant",
+        user => "vagrant",
+        group => "vagrant",
+        environment => [ "HOME=/home/vagrant" ],
+        path => ["/bin", "/usr/bin", "/usr/local/bin"],
+        command => "/home/vagrant/virtualenvsetup.sh",
+        require => [File["/home/vagrant/virtualenvsetup.sh"]],
+        logoutput => "true"
     }
 }
