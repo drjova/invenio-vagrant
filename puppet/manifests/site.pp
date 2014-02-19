@@ -19,15 +19,12 @@ include python
 node default {
     include invenio
 
+    class { "redis": }
+
     class { "::mysql::server":
         root_password => "invenio",
         override_options => { "mysqld" => { "max_connections" => 1024 }}
     }
-
-    # Installed manually
-    #class { "::mysql::bindings":
-    #    python_enable => 1
-    #}
 
     mysql::db { "invenio":
         user => "invenio",
@@ -43,6 +40,26 @@ node default {
         path => ["/bin", "/usr/bin", "/usr/local/bin"],
         command => "/home/vagrant/virtualenvsetup.sh",
         require => [File["/home/vagrant/virtualenvsetup.sh"]],
+        logoutput => "true"
+    } ->
+    exec { "virtualenvinstall.sh":
+        cwd => "/home/vagrant",
+        user => "vagrant",
+        group => "vagrant",
+        environment => [ "HOME=/home/vagrant" ],
+        path => ["/bin", "/usr/bin", "/usr/local/bin"],
+        command => "/home/vagrant/virtualenvinstall.sh",
+        require => [File["/home/vagrant/virtualenvinstall.sh"]],
+        logoutput => "true"
+    } ->
+    exec { "virtualenvconfigure.sh":
+        cwd => "/home/vagrant",
+        user => "vagrant",
+        group => "vagrant",
+        environment => [ "HOME=/home/vagrant" ],
+        path => ["/bin", "/usr/bin", "/usr/local/bin"],
+        command => "/home/vagrant/virtualenvconfigure.sh",
+        require => [File["/home/vagrant/virtualenvconfigure.sh"]],
         logoutput => "true"
     }
 }

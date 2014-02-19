@@ -15,12 +15,5 @@ class baseconfig {
         group => "vagrant",
         mode => "0644",
         source => "puppet:///modules/baseconfig/bashrc"
-    } ->
-    file {
-        "/home/vagrant/virtualenvsetup.sh":
-        owner => "vagrant",
-        group => "vagrant",
-        mode => "0755",
-        source => "puppet:///modules/baseconfig/virtualenvsetup.sh"
     }
 }
