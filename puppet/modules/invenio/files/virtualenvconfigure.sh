@@ -23,6 +23,7 @@ inveniomanage config set CFG_EMAIL_BACKEND flask.ext.email.backend.console.Mail
 inveniomanage config set CFG_BIBSCHED_PROCESS_USER `whoami`
 inveniomanage config set CFG_DATABASE_NAME invenio
 inveniomanage config set CFG_DATABASE_USER invenio
+inveniomanage config set CFG_SITE_URL http://0.0.0.0:4000
 inveniomanage config set PACKAGES "['invenio_demosite', 'invenio.modules.*']"
 
 # dirname pwd because we are in a symlink here.
