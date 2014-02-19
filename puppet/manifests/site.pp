@@ -19,6 +19,23 @@ include python
 node default {
     include invenio
 
+    class { "nginx": }
+
+    nginx::resource::upstream { "invenio":
+        ensure => "present",
+        members => ["localhost:4000"]
+    }
+
+    nginx::resource::vhost { "localhost":
+        ensure => "present",
+        proxy => "http://invenio"
+    } ->
+    exec { "rm default nginx conf":
+        cwd => "/",
+        path => ["/bin", "/usr/bin"],
+        command => "rm -f /etc/nginx/conf.d/default.conf"
+    }
+
     class { "redis": }
 
     class { "::mysql::server":
