@@ -16,6 +16,8 @@ cdvirtualenv
 
 cd src/invenio
 pip install -U pip
+pip install -U supervisor
+pip install -U flower
 pip install -e . --process-dependency-links --allow-all-external
 
 npm install || die 1 "npm install failed"
