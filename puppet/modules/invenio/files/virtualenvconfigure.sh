@@ -40,7 +40,6 @@ INVENIO_PID=$!
 
 inveniomanage demosite populate
 
-
 redis-cli flushdb
 
 kill $REDIS_PID
