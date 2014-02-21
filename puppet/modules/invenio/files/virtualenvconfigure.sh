@@ -32,6 +32,16 @@ grunt build --path=`dirname pwd`/../var/invenio.base-instance/static || die 1 "g
 inveniomanage database init --yes-i-know --user=root --password=invenio
 inveniomanage database create
 inveniomanage demosite create
+# Populate requires the server to be running as well as redis.
+redis-server &
+REDIS_PID=$!
+inveniomanage runserver &
+INVENIO_PID=$!
+
 inveniomanage demosite populate
 
+
 redis-cli flushdb
+
+kill $REDIS_PID
+kill $INVENIO_PID

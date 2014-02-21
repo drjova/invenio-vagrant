@@ -26,7 +26,9 @@ manually, they are located in the home directory.
     $ vagrant ssh
     $ # on the VM
     $ workon pu
-    $ inveniomanage runserver
+    $ cdvirtualenv
+    $ cd src/invenio
+    $ honcho start -f Procfile
 
 Then open your favourite web browser on http://localhost:4000/
 

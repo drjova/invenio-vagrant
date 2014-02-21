@@ -38,33 +38,4 @@ class invenio {
         mode => "0755",
         source => "puppet:///modules/invenio/virtualenvconfigure.sh"
     }
-
-    file {
-        "/home/vagrant/.virtualenvs/pu/etc/supervisord.conf":
-        owner => "vagrant",
-        group => "vagrant",
-        mode => "0755",
-        source => "puppet:///modules/invenio/supervisord.conf"
-    } ->
-    file {
-        "/home/vagrant/.virtualenvs/pu/etc/supervisor.conf.d":
-        ensure => "directory",
-        owner => "vagrant",
-        group => "vagrant",
-        mode => "0755"
-    } ->
-    file {
-        "/home/vagrant/.virtualenvs/pu/etc/supervisor.conf.d/celery.ini":
-        owner => "vagrant",
-        group => "vagrant",
-        mode => "0644",
-        source => "puppet:///modules/invenio/supervisor.conf.d/celery.ini"
-    } ->
-    file {
-        "/home/vagrant/.virtualenvs/pu/etc/supervisor.conf.d/flower.ini":
-        owner => "vagrant",
-        group => "vagrant",
-        mode => "0644",
-        source => "puppet:///modules/invenio/supervisor.conf.d/flower.ini"
-    }
 }

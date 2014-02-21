@@ -19,7 +19,15 @@ include python
 node default {
     include invenio
 
-    class { "redis": }
+    # Install redis-server and disable it from being autoloaded.
+    class { "redis":
+    } -> exec { "stop redis-server":
+        path => ["/usr/bin"],
+        command => "service redis-server stop"
+    } -> exec { "disable redis-server":
+        path => ["/usr/sbin"],
+        command => "update-rc.d redis-server disable"
+    }
 
     class { "::mysql::server":
         root_password => "invenio",
@@ -50,7 +58,8 @@ node default {
         path => ["/bin", "/usr/bin", "/usr/local/bin"],
         command => "/home/vagrant/virtualenvinstall.sh",
         require => [File["/home/vagrant/virtualenvinstall.sh"]],
-        logoutput => "true"
+        logoutput => "true",
+        timeout => 0
     } ->
     exec { "virtualenvconfigure.sh":
         cwd => "/home/vagrant",
@@ -60,6 +69,7 @@ node default {
         path => ["/bin", "/usr/bin", "/usr/local/bin"],
         command => "/home/vagrant/virtualenvconfigure.sh",
         require => [File["/home/vagrant/virtualenvconfigure.sh"]],
-        logoutput => "true"
+        logoutput => "true",
+        timeout => 0
     }
 }
