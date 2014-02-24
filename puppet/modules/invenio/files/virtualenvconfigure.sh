@@ -27,7 +27,7 @@ inveniomanage config set CFG_SITE_URL http://0.0.0.0:4000
 inveniomanage config set PACKAGES "['invenio_demosite', 'invenio.modules.*']"
 
 # dirname pwd because we are in a symlink here.
-grunt build --path=`dirname pwd`/../var/invenio.base-instance/static || die 1 "grunt build failed"
+grunt --path=`dirname pwd`/../var/invenio.base-instance/static || die 1 "grunt failed"
 
 inveniomanage database init --yes-i-know --user=root --password=invenio
 inveniomanage database create
