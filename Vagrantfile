@@ -16,12 +16,46 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # doesn't already exist on the user's system.
   config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network :forwarded_port, guest: 80, host: 8080
-  config.vm.network :forwarded_port, guest: 4000, host: 4000
-  config.vm.network :forwarded_port, guest: 5555, host: 5555
+  config.vm.define "default" do |pu|
+    # Create a forwarded port mapping which allows access to a specific port
+    # within the machine from a port on the host machine. In the example below,
+    # accessing "localhost:8080" will access port 80 on the guest machine.
+    pu.vm.network :forwarded_port, guest: 80, host: 8080
+    pu.vm.network :forwarded_port, guest: 4000, host: 4000
+    pu.vm.network :forwarded_port, guest: 5555, host: 5555
+
+    # Share an additional folder to the guest VM. The first argument is
+    # the path on the host to the actual folder. The second argument is
+    # the path on the guest to mount the folder. And the optional third
+    # argument is a set of non-required options.
+    # config.vm.synced_folder "../data", "/vagrant_data"
+    pu.vm.synced_folder "../invenio", "/home/vagrant/invenio"
+    pu.vm.synced_folder "../invenio-demosite", "/home/vagrant/demosite"
+
+    # Enable provisioning with Puppet stand alone.  Puppet manifests
+    # are contained in a directory path relative to this Vagrantfile.
+    # You will need to create the manifests directory and a manifest in
+    # the file precise64.pp in the manifests_path directory.
+    #
+    # An example Puppet manifest to provision the message of the day:
+    #
+    # # group { "puppet":
+    # #   ensure => "present",
+    # # }
+    # #
+    # # File { owner => 0, group => 0, mode => 0644 }
+    # #
+    # # file { '/etc/motd':
+    # #   content => "Welcome to your Vagrant-built virtual machine!
+    # #               Managed by Puppet.\n"
+    # # }
+    #
+    config.vm.provision :puppet do |puppet|
+      puppet.manifests_path = "puppet/manifests"
+      puppet.manifest_file  = "site.pp"
+      puppet.module_path = "puppet/modules"
+    end
+  end
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -35,14 +69,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # If true, then any SSH connections made will enable agent forwarding.
   # Default value: false
   # config.ssh.forward_agent = true
-
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
-  # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
-  config.vm.synced_folder "../invenio", "/home/vagrant/invenio"
-  config.vm.synced_folder "../invenio-demosite", "/home/vagrant/demosite"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -58,30 +84,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   # View the documentation for the provider you're using for more
   # information on available options.
-
-  # Enable provisioning with Puppet stand alone.  Puppet manifests
-  # are contained in a directory path relative to this Vagrantfile.
-  # You will need to create the manifests directory and a manifest in
-  # the file precise64.pp in the manifests_path directory.
-  #
-  # An example Puppet manifest to provision the message of the day:
-  #
-  # # group { "puppet":
-  # #   ensure => "present",
-  # # }
-  # #
-  # # File { owner => 0, group => 0, mode => 0644 }
-  # #
-  # # file { '/etc/motd':
-  # #   content => "Welcome to your Vagrant-built virtual machine!
-  # #               Managed by Puppet.\n"
-  # # }
-  #
-  config.vm.provision :puppet do |puppet|
-    puppet.manifests_path = "puppet/manifests"
-    puppet.manifest_file  = "site.pp"
-    puppet.module_path = "puppet/modules"
-  end
 
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
   # path, and data_bags path (all relative to this Vagrantfile), and adding
