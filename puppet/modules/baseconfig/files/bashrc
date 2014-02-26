@@ -107,4 +107,11 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 # VirtualEnvWrapper
-source /usr/local/bin/virtualenvwrapper.sh
+if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+    . /usr/local/bin/virtualenvwrapper.sh
+fi
+
+# Invenio devscripts
+if [ -d /home/vagrant/private/src/invenio-devscripts ]; then
+    export PATH+=:/home/vagrant/private/src/invenio-devscripts
+fi

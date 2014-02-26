@@ -52,7 +52,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #
     config.vm.provision :puppet do |puppet|
       puppet.manifests_path = "puppet/manifests"
-      puppet.manifest_file  = "site.pp"
+      puppet.manifest_file  = "pu.pp"
+      puppet.module_path = "puppet/modules"
+    end
+  end
+
+  config.vm.define "master" do |master|
+    master.vm.network :forwarded_port, guest: 80, host: 8000
+
+    master.vm.synced_folder "../invenio-trac", "/home/vagrant/private/src/invenio"
+    master.vm.synced_folder "../invenio-devscripts", "/home/vagrant/private/src/invenio-devscripts"
+
+    master.vm.provision :puppet do |puppet|
+      puppet.manifests_path = "puppet/manifests"
+      puppet.manifest_file = "master.pp"
       puppet.module_path = "puppet/modules"
     end
   end

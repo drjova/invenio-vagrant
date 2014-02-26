@@ -1,0 +1,7 @@
+vagrant ALL=(www-data) NOPASSWD: ALL, \
+            (root) NOPASSWD: /bin/rm -rf /opt/invenio/var/tmp/ooffice-tmp-files, \
+            (root) NOPASSWD: /bin/mkdir -p /opt/invenio/var/tmp/ooffice-tmp-files, \
+            (root) NOPASSWD: /bin/chown -R nobody /opt/invenio/var/tmp/ooffice-tmp-files, \
+            (root) NOPASSWD: /bin/chmod -R 755 /opt/invenio/var/tmp/ooffice-tmp-files, \
+            (root) NOPASSWD: /etc/init.d/apache2, \
+            (root) NOPASSWD: /etc/init.d/mysql
