@@ -29,6 +29,10 @@ node default {
         command => "update-rc.d redis-server disable"
     }
 
+    # Install rabbitmq and disable it form being autoloaded
+    class { "rabbitmq":
+    }
+
     class { "::mysql::server":
         root_password => "invenio",
         override_options => { "mysqld" => { "max_connections" => 1024 }}

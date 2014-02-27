@@ -8,6 +8,7 @@ class baseconfig {
     package {
         "git": ensure => "present";
         "vim": ensure => "present";
+        "curl": ensure => "present";
     }
 
     file {
