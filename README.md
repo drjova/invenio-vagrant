@@ -26,6 +26,11 @@ that will automagically upgrade the _VirtualBox Guest Additions_.
     $ # on the host
     $ cd invenio-vagrant
     $ vagrant up master
+    $ vagrant ssh master
+    $ # on the VM
+    $ sudo apt-get update && sudo apt-get upgrade
+    $ exit
+    $ # on the host
     $ vagrant provision master
     $ vagrant ssh master
     $ # on the VM
@@ -60,9 +65,13 @@ manually, they are located in the home directory.
     $ # on the host
     $ cd invenio-vagrant
     $ vagrant init
-    $ vagrant up pu
-    $ vagrant provision pu
-    $ vagrant ssh pu
+    $ vagrant up default
+    $ # on the VM
+    $ sudo apt-get update && sudo apt-get upgrade
+    $ exit
+    $ # on the host
+    $ vagrant provision default
+    $ vagrant ssh default
     $ # on the VM
     $ workon pu
     $ cdvirtualenv
