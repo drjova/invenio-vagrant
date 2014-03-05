@@ -14,6 +14,13 @@ First, we need to grab the invenio repository and devscripts.
     $ git clone https://github.com/tiborsimko/invenio-devscripts
     $ git clone https://github.com/greut/invenio-vagrant
 
+#### Install VB-guest
+
+[vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) is a plugin
+that will automagically upgrade the _VirtualBox Guest Additions_.
+
+    $ vagrant plugin install vagrant-vbguest
+
 ### Usage
 
     $ # on the host
