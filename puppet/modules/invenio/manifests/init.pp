@@ -5,7 +5,7 @@ class invenio {
         "libxslt-dev": ensure => "present";
         # NodeJS is required but the vanilla version may be too old.
         # https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
-        #"nodejs": ensure => "present";
+        "nodejs": ensure => "present";
         "virtualenvwrapper":
             ensure => "latest",
             provider => "pip";
