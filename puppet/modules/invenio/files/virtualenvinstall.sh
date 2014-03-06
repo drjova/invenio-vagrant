@@ -22,6 +22,10 @@ pip install -e . --process-dependency-links --allow-all-external
 pip install -r requirements-img.txt
 pip install -r requirements-extras.txt
 
+cd ../demosite
+pip install -e .
+
+cd ../invenio
 npm install || die 1 "npm install failed"
 bower install || die 1 "bower install failed"
 
