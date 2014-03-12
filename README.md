@@ -28,10 +28,11 @@ that will automagically upgrade the _VirtualBox Guest Additions_.
     $ vagrant up master
     $ vagrant ssh master
     $ # on the VM
-    $ sudo apt-get update && sudo apt-get upgrade
-    $ exit
+    $ sudo apt-get update && sudo apt-get dist-upgrade
+    $ sudo apt-get install puppet
+    $ sudo poweroff
     $ # on the host
-    $ vagrant provision master
+    $ vagrant up --provision master
     $ vagrant ssh master
     $ # on the VM
     $ invenio-kickstart --yes-i-know --yes-i-really-know
@@ -65,13 +66,14 @@ manually, they are located in the home directory.
     $ # on the host
     $ cd invenio-vagrant
     $ vagrant init
-    $ vagrant up default
+    $ vagrant up pu
     $ # on the VM
-    $ sudo apt-get update && sudo apt-get upgrade
+    $ sudo apt-get update && sudo apt-get dist-upgrade
+    $ sudo apt-get install puppet
     $ exit
     $ # on the host
-    $ vagrant provision default
-    $ vagrant ssh default
+    $ vagrant up --provision pu
+    $ vagrant ssh pu
     $ # on the VM
     $ workon pu
     $ cdvirtualenv
@@ -79,12 +81,6 @@ manually, they are located in the home directory.
     $ honcho start -f Procfile
 
 Then open your favourite web browser on http://localhost:4000/
-
-### FIXME
-
-* `nodejs` needs to be installed manually because the apt version is too old.
-  (See: [Installing Node.js via package
-  manager](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager))
 
 ## Problems?
 

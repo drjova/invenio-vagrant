@@ -13,15 +13,16 @@ source /usr/local/bin/virtualenvwrapper.sh
 
 workon | grep -q ^pu$
 if [ "$?" -ne "0" ]; then
-    mkvirtualenv pu --no-site-packages || die 1 "mkvirtualenv pu"
+    mkvirtualenv pu || die 1 "mkvirtualenv pu"
+else
+    workon pu
 fi
 
-workon pu
 cdvirtualenv
 
 mkdir -p src
-rm -r src/invenio
-rm -r src/demosite
+rm -rf src/invenio
+rm -rf src/demosite
 ln -s ~/invenio src/invenio
 ln -s ~/demosite src/demosite
 
