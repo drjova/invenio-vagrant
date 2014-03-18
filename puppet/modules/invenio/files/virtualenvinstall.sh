@@ -26,6 +26,7 @@ cd ../demosite
 pip install -e .
 
 cd ../invenio
+
 npm install || die 1 "npm install failed"
 bower install || die 1 "bower install failed"
 

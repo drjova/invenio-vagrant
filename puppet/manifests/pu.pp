@@ -13,6 +13,10 @@ File {
     mode => "0644",
 }
 
+Exec {
+    path => ["/bin", "/sbin", "/usr/bin", "/usr/sbin", "/usr/local/bin"]
+}
+
 include baseconfig
 include python
 
@@ -22,10 +26,8 @@ node default {
     # Install redis-server and disable it from being autoloaded.
     class { "redis":
     } -> exec { "stop redis-server":
-        path => ["/usr/bin"],
         command => "service redis-server stop"
     } -> exec { "disable redis-server":
-        path => ["/usr/sbin"],
         command => "update-rc.d redis-server disable"
     }
 
@@ -49,20 +51,18 @@ node default {
         user => "vagrant",
         group => "vagrant",
         environment => [ "HOME=/home/vagrant" ],
-        path => ["/bin", "/usr/bin", "/usr/local/bin"],
         command => "/home/vagrant/virtualenvsetup.sh",
         require => [File["/home/vagrant/virtualenvsetup.sh"]],
-        logoutput => "true"
+        logoutput => "on_failure"
     } ->
     exec { "virtualenvinstall.sh":
         cwd => "/home/vagrant",
         user => "vagrant",
         group => "vagrant",
         environment => [ "HOME=/home/vagrant" ],
-        path => ["/bin", "/usr/bin", "/usr/local/bin"],
         command => "/home/vagrant/virtualenvinstall.sh",
         require => [File["/home/vagrant/virtualenvinstall.sh"]],
-        logoutput => "true",
+        logoutput => "on_failure",
         timeout => 0
     } ->
     exec { "virtualenvconfigure.sh":
@@ -70,10 +70,9 @@ node default {
         user => "vagrant",
         group => "vagrant",
         environment => [ "HOME=/home/vagrant" ],
-        path => ["/bin", "/usr/bin", "/usr/local/bin"],
         command => "/home/vagrant/virtualenvconfigure.sh",
         require => [File["/home/vagrant/virtualenvconfigure.sh"]],
-        logoutput => "true",
+        logoutput => "on_failure",
         timeout => 0
     }
 }

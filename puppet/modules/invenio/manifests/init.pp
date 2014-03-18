@@ -12,27 +12,45 @@ class invenio {
             ensure => "latest",
             provider => "pip";
     } ->
-    exec { "revert nodejs exec for bower":
-        cwd => "/home/vagrant",
-        path => ["/bin", "/usr/bin"],
-        command => "rm -f /usr/local/bin/bower"
+    # http://howtonode.org/introduction-to-npm
+    exec { "symlinking node":
+        unless => "test -e /usr/bin/node",
+        command => "ln -s /usr/bin/nodejs /usr/bin/node"
     } ->
-    exec { "npm install -g grunt-cli bower":
-        cwd => "/home/vagrant",
-        path => ["/bin", "/usr/bin", "/usr/local/bin"],
-        command => "npm install -g grunt-cli bower"
+    exec { "chown /usr/local":
+        command => "chown -R vagrant:vagrant /usr/local"
     } ->
-    exec { "fix nodejs exec for bower":
-        cwd => "/home/vagrant",
-        path => ["/bin", "/usr/bin"],
-        command => "sed -i \"s/env nodejs/env node/\" /usr/local/bin/bower"
-    } ->
-    exec { "silent bower":
-        cwd => "/home/vagrant",
+    exec { "updating npm ":
+        unless => "test -e /usr/bin/npm-1.2",
+        command => "npm install -g npm",
         user => "vagrant",
         group => "vagrant",
-        path => ["/bin", "/usr/bin"],
-        command => "mkdir -p ~/.config/configstore && echo optOut: true > ~/.config/configstore/insight-bower.yml"
+        logoutput => "on_failure"
+    } ->
+    exec { "deactivate old npm":
+        unless => "test -e /usr/bin/npm-1.2",
+        command => "mv /usr/bin/npm /usr/bin/npm-1.2",
+    } ->
+    exec { "set npm prefix":
+        cwd => "/home/vagrant",
+        unless => "test -e .npmrc",
+        command => "npm config set prefix /usr/local",
+        user => "vagrant",
+        group => "vagrant",
+        logoutput => "on_failure"
+    } ->
+    exec { "install grunt-cli and bower":
+        command => "npm install -g bower grunt-cli",
+        user => "vagrant",
+        group => "vagrant",
+        logoutput => "on_failure"
+    } ->
+    exec { "silent bower bower":
+        cwd => "/home/vagrant",
+        unless => "test -e .config/configstore/insight-bower.yml",
+        command => "mkdir -p .config/configstore && echo optOut: true > .config/configstore/insight-bower.yml",
+        user => "vagrant",
+        group => "vagrant"
     }
 
     file { "/home/vagrant/virtualenvsetup.sh":
