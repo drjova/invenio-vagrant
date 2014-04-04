@@ -142,7 +142,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # set auto_update to false, if you do NOT want to check the correct
   # additions version when booting this machine
-  config.vbguest.auto_update = true
+  if Vagrant.has_plugin?("vagrant-vbguest") then
+    config.vbguest.auto_update = true
+  end
 
   # do NOT download the iso file from a webserver
   config.vbguest.no_remote = false

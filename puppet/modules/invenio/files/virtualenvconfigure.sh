@@ -10,6 +10,7 @@ die () {
 }
 
 source /usr/local/bin/virtualenvwrapper.sh
+export PATH+=:/usr/local/bin
 
 workon pu
 cdvirtualenv

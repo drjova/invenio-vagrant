@@ -28,6 +28,8 @@ that will automagically upgrade the _VirtualBox Guest Additions_.
     $ vagrant up master
     $ vagrant ssh master
     $ # on the VM
+    $ # https://github.com/mitchellh/vagrant/issues/3341#issuecomment-38887958
+    $ sudo ln -s /opt/VBoxGuestAdditions-4.3.10/lib/VBoxGuestAdditions /usr/lib/
     $ sudo apt-get update && \
       sudo apt-get dist-upgrade -qy && \
       sudo apt-get install -y puppet
@@ -69,6 +71,8 @@ manually, they are located in the home directory.
     $ vagrant init
     $ vagrant up pu
     $ # on the VM
+    $ # https://github.com/mitchellh/vagrant/issues/3341#issuecomment-38887958
+    $ sudo ln -s /opt/VBoxGuestAdditions-4.3.10/lib/VBoxGuestAdditions /usr/lib/VBoxGuestAdditions
     $ sudo apt-get update && \
       sudo apt-get dist-upgrade -qy && \
       sudo apt-get install -y puppet

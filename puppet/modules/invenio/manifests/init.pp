@@ -30,27 +30,6 @@ class invenio {
     exec { "deactivate old npm":
         unless => "test -e /usr/bin/npm-1.2",
         command => "mv /usr/bin/npm /usr/bin/npm-1.2",
-    } ->
-    exec { "set npm prefix":
-        cwd => "/home/vagrant",
-        unless => "test -e .npmrc",
-        command => "npm config set prefix /usr/local",
-        user => "vagrant",
-        group => "vagrant",
-        logoutput => "on_failure"
-    } ->
-    exec { "install grunt-cli and bower":
-        command => "npm install -g bower grunt-cli",
-        user => "vagrant",
-        group => "vagrant",
-        logoutput => "on_failure"
-    } ->
-    exec { "silent bower bower":
-        cwd => "/home/vagrant",
-        unless => "test -e .config/configstore/insight-bower.yml",
-        command => "mkdir -p .config/configstore && echo optOut: true > .config/configstore/insight-bower.yml",
-        user => "vagrant",
-        group => "vagrant"
     }
 
     file { "/home/vagrant/virtualenvsetup.sh":
