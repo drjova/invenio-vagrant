@@ -12,10 +12,45 @@ die () {
 source /usr/local/bin/virtualenvwrapper.sh
 export PATH+=:/usr/local/bin
 
-workon pu
+workon | grep -q ^pu$
+if [ "$?" -ne "0" ]; then
+    mkvirtualenv pu || die 1 "mkvirtualenv pu"
+else
+    workon pu
+fi
+
 cdvirtualenv
 
-cd src/invenio
+mkdir -p src
+rm -rf src/invenio
+rm -rf src/demosite
+ln -s ~/invenio src/invenio
+ln -s ~/demosite src/demosite
+
+mkdir -p var/run
+mkdir -p var/tmp
+mkdir -p var/tmp-shared
+
+npm config set prefix /usr/local
+npm install -g bower grunt-cli
+# Silent bower
+mkdir -p .config/configstore
+echo optOut: true > .config/configstore/insight-bower.yml
+
+workon pu
+cdvirtualenv src/invenio
+
+pip install -U flower honcho pip
+pip install -e . --process-dependency-links --allow-all-external
+pip install -r requirements-img.txt
+pip install -r requirements-extras.txt
+npm install || die 1 "npm install failed"
+bower install || die 1 "bower install failed"
+
+cd ../demosite
+pip install -e .
+
+cd ../invenio
 
 pybabel compile -fd invenio/base/translations || die 1 "pybabel compile failed"
 
@@ -47,3 +82,6 @@ redis-cli flushdb
 
 kill $REDIS_PID
 kill $INVENIO_PID
+
+echo "Kill inveniomanage manually if it still lives"
+deactivate

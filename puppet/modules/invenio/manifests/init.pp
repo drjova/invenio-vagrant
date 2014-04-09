@@ -32,22 +32,10 @@ class invenio {
         command => "mv /usr/bin/npm /usr/bin/npm-1.2",
     }
 
-    file { "/home/vagrant/virtualenvsetup.sh":
+    file { "/home/vagrant/invenio-setup.sh":
         owner => "vagrant",
         group => "vagrant",
         mode => "0755",
-        source => "puppet:///modules/invenio/virtualenvsetup.sh"
-    }
-    file { "/home/vagrant/virtualenvinstall.sh":
-        owner => "vagrant",
-        group => "vagrant",
-        mode => "0755",
-        source => "puppet:///modules/invenio/virtualenvinstall.sh"
-    }
-    file { "/home/vagrant/virtualenvconfigure.sh":
-        owner => "vagrant",
-        group => "vagrant",
-        mode => "0755",
-        source => "puppet:///modules/invenio/virtualenvconfigure.sh"
+        source => "puppet:///modules/invenio/invenio-setup.sh"
     }
 }

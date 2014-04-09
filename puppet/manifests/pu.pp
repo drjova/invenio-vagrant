@@ -46,33 +46,14 @@ node default {
         host => "localhost",
         grant => ["ALL"]
 #    } ->
-#    exec { "virtualenvsetup.sh":
+#    exec { "invenio-setup.sh":
 #        cwd => "/home/vagrant",
 #        user => "vagrant",
 #        group => "vagrant",
 #        environment => [ "HOME=/home/vagrant" ],
-#        command => "/home/vagrant/virtualenvsetup.sh",
-#        require => [File["/home/vagrant/virtualenvsetup.sh"]],
+#        command => "/home/vagrant/invenio-setup.sh",
+#        require => [File["/home/vagrant/invenio-setup.sh"]],
 #        logoutput => "on_failure"
-#    } ->
-#    exec { "virtualenvinstall.sh":
-#        cwd => "/home/vagrant",
-#        user => "vagrant",
-#        group => "vagrant",
-#        environment => [ "HOME=/home/vagrant" ],
-#        command => "/home/vagrant/virtualenvinstall.sh",
-#        require => [File["/home/vagrant/virtualenvinstall.sh"]],
-#        logoutput => "on_failure",
-#        timeout => 0
-#    } ->
-#    exec { "virtualenvconfigure.sh":
-#        cwd => "/home/vagrant",
-#        user => "vagrant",
-#        group => "vagrant",
-#        environment => [ "HOME=/home/vagrant" ],
-#        command => "/home/vagrant/virtualenvconfigure.sh",
-#        require => [File["/home/vagrant/virtualenvconfigure.sh"]],
-#        logoutput => "on_failure",
 #        timeout => 0
     }
 }
