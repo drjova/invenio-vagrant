@@ -21,6 +21,11 @@ include baseconfig
 include python
 
 node default {
+    class { "nodejs":
+        dev_package => false,
+        manage_repo => true
+    }
+
     include invenio
 
     # Install redis-server and disable it from being autoloaded.
@@ -29,10 +34,6 @@ node default {
         command => "service redis-server stop"
     } -> exec { "disable redis-server":
         command => "update-rc.d redis-server disable"
-    }
-
-    # Install rabbitmq and disable it form being autoloaded
-    class { "rabbitmq":
     }
 
     class { "::mysql::server":

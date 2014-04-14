@@ -35,7 +35,7 @@ that will automagically upgrade the _VirtualBox Guest Additions_.
       sudo apt-get install -y puppet
     $ sudo poweroff
     $ # on the host
-    $ vagrant up --provision master
+    $ vagrant up master
     $ vagrant ssh master
     $ # on the VM
     $ invenio-kickstart --yes-i-know --yes-i-really-know
@@ -69,7 +69,7 @@ manually, they are located in the home directory.
     $ # on the host
     $ cd invenio-vagrant
     $ vagrant init
-    $ vagrant up pu
+    $ vagrant up next
     $ # on the VM, if you encounter problems with mount
     $ # https://github.com/mitchellh/vagrant/issues/3341#issuecomment-38887958
     $ sudo ln -s /opt/VBoxGuestAdditions-4.3.10/lib/VBoxGuestAdditions /usr/lib/VBoxGuestAdditions
@@ -78,8 +78,8 @@ manually, they are located in the home directory.
       sudo apt-get install -y puppet
     $ sudo poweroff
     $ # on the host
-    $ vagrant up --provision pu
-    $ vagrant ssh pu
+    $ vagrant up next
+    $ vagrant ssh next
     $ # on the VM
     $ ./invenio-setup.sh # and grab a coffee
     $ workon pu

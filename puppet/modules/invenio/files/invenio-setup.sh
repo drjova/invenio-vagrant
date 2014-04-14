@@ -10,8 +10,6 @@ die () {
 }
 
 source /usr/local/bin/virtualenvwrapper.sh
-export PATH+=:/usr/local/bin
-
 workon | grep -q ^pu$
 if [ "$?" -ne "0" ]; then
     mkvirtualenv pu || die 1 "mkvirtualenv pu"
@@ -31,14 +29,11 @@ mkdir -p var/run
 mkdir -p var/tmp
 mkdir -p var/tmp-shared
 
-npm config set prefix /usr/local
-npm install -g bower grunt-cli
 # Silent bower
 mkdir -p .config/configstore
 echo optOut: true > .config/configstore/insight-bower.yml
 
-workon pu
-cdvirtualenv src/invenio
+cd src/invenio
 
 pip install -U flower honcho pip
 pip install -e . --process-dependency-links --allow-all-external
@@ -62,7 +57,7 @@ inveniomanage config set CFG_DATABASE_USER invenio
 inveniomanage config set CFG_SITE_URL http://0.0.0.0:4000
 inveniomanage config set PACKAGES "['invenio_demosite', 'invenio.modules.*']"
 
-# dirname pwd because we are in a symlink here.
+# dirname pwd because we are in a symlink directory here.
 grunt --path=`dirname pwd`/../var/invenio.base-instance/static || die 1 "grunt failed"
 
 # cleaning up old compiled files

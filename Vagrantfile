@@ -12,7 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "chef/ubuntu-13.10"
 
-  config.vm.define "pu" do |pu|
+  config.vm.define "next" do |pu|
     # Create a forwarded port mapping which allows access to a specific port
     # within the machine from a port on the host machine. In the example below,
     # accessing "localhost:8080" will access port 80 on the guest machine.
@@ -145,8 +145,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # additions version when booting this machine
   if Vagrant.has_plugin?("vagrant-vbguest") then
     config.vbguest.auto_update = true
+    # do NOT download the iso file from a webserver
+    config.vbguest.no_remote = false
   end
-
-  # do NOT download the iso file from a webserver
-  config.vbguest.no_remote = false
 end
