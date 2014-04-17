@@ -12,6 +12,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "chef/ubuntu-13.10"
 
+  config.vm.define "salt" do |node|
+    node.vm.network :forwarded_port, guest: 80, host: 8800
+
+    node.vm.synced_folder "../invenio", "/home/vagrant/invenio"
+    node.vm.synced_folder "../invenio-demosite", "/home/vagrant/invenio-demosite"
+    node.vm.synced_folder "salt/roots", "/srv/salt"
+
+    node.vm.provision :salt do |salt|
+      salt.minion_config = "salt/minion.sls"
+      salt.run_highstate = true
+      salt.verbose = true
+    end
+  end
+
   config.vm.define "next" do |pu|
     # Create a forwarded port mapping which allows access to a specific port
     # within the machine from a port on the host machine. In the example below,
