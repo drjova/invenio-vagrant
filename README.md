@@ -38,6 +38,8 @@ that will automagically upgrade the _VirtualBox Guest Additions_.
     $ vagrant up master
     $ vagrant ssh master
     $ # on the VM
+    $ export CFG_INVENIO_PORT_HTTP=8000
+    $ export CFG_INVENIO_PORT_HTTPS=8443
     $ invenio-kickstart --yes-i-know --yes-i-really-know
 
 The service should be running on: http://localhost:8000

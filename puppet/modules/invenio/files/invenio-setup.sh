@@ -30,8 +30,8 @@ mkdir -p var/tmp
 mkdir -p var/tmp-shared
 
 # Silent bower
-mkdir -p .config/configstore
-echo optOut: true > .config/configstore/insight-bower.yml
+mkdir -p $HOME/.config/configstore
+echo optOut: true > $HOME/.config/configstore/insight-bower.yml
 
 cd src/invenio
 
@@ -76,7 +76,7 @@ inveniomanage demosite populate
 redis-cli flushdb
 
 kill $REDIS_PID
-kill $INVENIO_PID
+pkill -TERM -P $INVENIO_PID
 
 echo "Kill inveniomanage manually if it still lives"
 deactivate
