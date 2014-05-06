@@ -11,8 +11,10 @@ sed -i "s/vagrant:$/vagrant:\\/bin\\/bash/" /etc/passwd
 EOF
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  # Ubuntu stuff
+  # Ubuntu 14.04 LTS x86_64
   config.vm.box = "puppetlabs/ubuntu-14.04-64-nocm"
+  # Ubuntu 14.04 LTS x86
+  #config.vm.box = "puppetlabs/ubuntu-14.04-32-nocm"
 
   config.vm.provision :shell, inline: $script
 
