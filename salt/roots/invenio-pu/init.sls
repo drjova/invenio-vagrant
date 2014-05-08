@@ -32,6 +32,7 @@ redis:
     file.managed:
         - source:
             - salt://invenio-pu/setup.sh
+        - template: jinja
         - user: vagrant
         - group: vagrant
         - mode: 0755

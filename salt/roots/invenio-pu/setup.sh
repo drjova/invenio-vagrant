@@ -1,4 +1,12 @@
 #!/bin/bash
+{%- if grains["fqdn"] == "cds" -%}
+    {%- set module = "cds_demosite" -%}
+    {%- set port = 4004 -%}
+{%- else -%}
+    {%- set module = "invenio_demosite" -%}
+    {%- set port = 4004 -%}
+{%- endif %}
+
 warn () {
     echo "$0:" "$@" >&2
 }
@@ -15,7 +23,7 @@ workon | grep -q ^pu$
 if [ "$?" -ne "0" ]; then
     mkvirtualenv pu || die 1 "mkvirtualenv pu"
 else
-    workon pu
+    workon pu || die 1 "workon pu"
 fi
 
 cdvirtualenv
@@ -36,14 +44,14 @@ cd src/invenio
 mkdir -p $HOME/.config/configstore
 echo optOut: true > $HOME/.config/configstore/insight-bower.yml
 
-pip install -e . --process-dependency-links --allow-all-external
+pip install -e . --process-dependency-links --allow-all-external || die 1 "invenio install failed"
 pip install -r requirements-img.txt
 pip install -r requirements-extras.txt
 npm install || die 1 "npm install failed"
 bower install || die 1 "bower install failed"
 
 cd ../demosite
-pip install -e .
+pip install -e . || die 1 "demosite install failed"
 
 cd ../invenio
 
@@ -54,21 +62,21 @@ inveniomanage config set CFG_EMAIL_BACKEND flask.ext.email.backends.console.Mail
 inveniomanage config set CFG_BIBSCHED_PROCESS_USER $USER
 inveniomanage config set CFG_DATABASE_NAME invenio
 inveniomanage config set CFG_DATABASE_USER invenio
-inveniomanage config set CFG_SITE_URL http://0.0.0.0:4000
+inveniomanage config set CFG_SITE_URL http://0.0.0.0:{{ port }}
 
-# dirname pwd because we are in a symlink directory here.
-grunt --path=`dirname pwd`/../var/invenio.base-instance/static || die 1 "grunt failed"
+grunt || die 1 "grunt failed"
 
 # cleaning up old compiled files
 find . -iname "*.pyc" -exec rm {} \;
 inveniomanage database init --yes-i-know --user=root
 inveniomanage database create
-inveniomanage demosite create
-# Populate requires the server to be running as well as redis.
+inveniomanage demosite create --packages={{ module  }}.base
+
+# populate requires the server to be running as well as redis.
 inveniomanage runserver &
 INVENIO_PID=$!
 
-inveniomanage demosite populate
+inveniomanage demosite populate --packages={{ module  }}.base
 
 redis-cli flushdb
 

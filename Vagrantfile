@@ -29,7 +29,28 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     node.vm.hostname = "next"
 
     node.vm.synced_folder "../invenio", "/home/vagrant/invenio"
-    node.vm.synced_folder "../invenio-demosite", "/home/vagrant/invenio-demosite"
+    node.vm.synced_folder "../invenio-demosite", "/home/vagrant/demosite"
+    node.vm.synced_folder "salt/roots", "/srv/salt"
+
+    node.vm.provision :salt do |salt|
+      salt.minion_config = "salt/minion.sls"
+      salt.run_highstate = true
+      #salt.verbose = true
+    end
+  end
+
+  config.vm.define "cds" do |node|
+    # documentation served using python -m SimpleHTTPServer
+    node.vm.network :forwarded_port, guest: 8000, host: 8008
+    # invenio
+    node.vm.network :forwarded_port, guest: 4004, host: 4004
+    # flower
+    node.vm.network :forwarded_port, guest: 5555, host: 5550
+
+    node.vm.hostname = "cds"
+
+    node.vm.synced_folder "../invenio", "/home/vagrant/invenio"
+    node.vm.synced_folder "../cds-demosite", "/home/vagrant/demosite"
     node.vm.synced_folder "salt/roots", "/srv/salt"
 
     node.vm.provision :salt do |salt|

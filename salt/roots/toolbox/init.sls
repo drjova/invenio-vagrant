@@ -32,6 +32,15 @@ ppa-pkgs:
         - group: root
         - mode: 0440
 
+/etc/hosts:
+    file.managed:
+        - source:
+            - salt://toolbox/hosts
+        - template: jinja
+        - user: root
+        - group: root
+        - mode: 0644
+
 /home/vagrant/.bashrc:
     file.append:
         - text: |

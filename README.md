@@ -40,7 +40,7 @@ The service should be running on: http://localhost:8080
     $ cd private/ssh
     $ invenio-make-install
 
-## `pu` branch (aka `next`)
+## `next` branch (aka `pu`)
 
 ### Setup
 
@@ -58,7 +58,6 @@ manually, they are located in the home directory.
 
     $ # on the host
     $ cd invenio-vagrant
-    $ vagrant init
     $ vagrant up next
     $ vagrant ssh next
     $ # on the VM
@@ -69,6 +68,18 @@ manually, they are located in the home directory.
     $ honcho start -f Procfile
 
 Then open your favourite web browser on http://localhost:4000/
+
+## `cds` next
+
+This one is very similar to the above one (`next`) but uses another demosite.
+
+    $ git clone -b pu https://github.com/jirikuncar/invenio
+    $ git clone -b pu https://github.com/CERNDocumentServer/cds-demosite
+    $ git clone https://github.com/greut/invenio-vagrant
+
+From there, you can set it up and follow the steps from `next`.
+
+    $ vagrant up cds
 
 ## Problems?
 

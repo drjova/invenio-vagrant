@@ -2,9 +2,9 @@ base:
     '*':
         - toolbox
         - invenio-base
-    'next':
-        - toolbox
-        - invenio-pu
     'master':
-        - toolbox
         - invenio-master
+    'next':
+        - invenio-pu
+    'cds':
+        - invenio-pu
