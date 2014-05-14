@@ -63,8 +63,11 @@ inveniomanage config set CFG_BIBSCHED_PROCESS_USER $USER
 inveniomanage config set CFG_DATABASE_NAME invenio
 inveniomanage config set CFG_DATABASE_USER invenio
 inveniomanage config set CFG_SITE_URL http://0.0.0.0:{{ port }}
+inveniomanage config set DEBUG True
+inveniomanage config set COLLECT_STORAGE invenio.ext.collect.storage.link
 
 grunt || die 1 "grunt failed"
+inveniomanage collect
 
 # cleaning up old compiled files
 find . -iname "*.pyc" -exec rm {} \;
