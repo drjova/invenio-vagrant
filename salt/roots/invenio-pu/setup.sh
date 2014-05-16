@@ -1,6 +1,6 @@
 #!/bin/bash
 {%- if grains["fqdn"] == "cds" -%}
-    {%- set module = "cds_demosite" -%}
+    {%- set module = "cds" -%}
     {%- set port = 4004 -%}
 {%- else -%}
     {%- set module = "invenio_demosite" -%}
@@ -34,6 +34,8 @@ rm -rf src/demosite
 ln -s ~/invenio src/invenio
 ln -s ~/demosite src/demosite
 
+
+rm -rf var/invenio.instance-base
 mkdir -p var/run
 mkdir -p var/tmp
 mkdir -p var/tmp-shared
@@ -44,7 +46,7 @@ cd src/invenio
 mkdir -p $HOME/.config/configstore
 echo optOut: true > $HOME/.config/configstore/insight-bower.yml
 
-pip install -e . --process-dependency-links --allow-all-external || die 1 "invenio install failed"
+pip install -e -U . --process-dependency-links --allow-all-external || die 1 "invenio install failed"
 pip install -r requirements-img.txt
 pip install -r requirements-extras.txt
 npm install || die 1 "npm install failed"
