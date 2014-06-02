@@ -17,6 +17,7 @@ python-pkgs:
             - python-pip
             - virtualenvwrapper
             - build-essential
+            - gfortran
 
 ppa-pkgs:
     pkg.installed:
@@ -49,6 +50,9 @@ ppa-pkgs:
             fi
             if [ -d /home/vagrant/.bin ]; then
                 export PATH=$PATH:/home/vagrant/.bin
+            fi
+            if [ -d /home/vagrant/private/src/invenio-devscripts ]; then
+                export PATH=$PATH:/home/vagrant/private/src/invenio-devscripts
             fi
 
 /home/vagrant/.bin/git-new-workdir:

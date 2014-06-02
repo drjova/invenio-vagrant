@@ -10,6 +10,7 @@
 warn () {
     echo "$0:" "$@" >&2
 }
+
 die () {
     rc=$1
     shift
@@ -17,13 +18,22 @@ die () {
     exit $rc
 }
 
+# verbose
+set -v
+set -o pipefail
+IFS=$'\n\t'
 
 source /usr/local/bin/virtualenvwrapper.sh
 workon | grep -q ^pu$
 if [ "$?" -ne "0" ]; then
-    mkvirtualenv pu || die 1 "mkvirtualenv pu"
+    mkvirtualenv pu
 else
-    workon pu || die 1 "workon pu"
+    workon pu
+fi
+
+workon | grep -q ^pu$
+if [ "$?" -ne "0" ]; then
+    die 1 "virtualenv pu is not set properly"
 fi
 
 cdvirtualenv
@@ -46,18 +56,22 @@ cd src/invenio
 mkdir -p $HOME/.config/configstore
 echo optOut: true > $HOME/.config/configstore/insight-bower.yml
 
-pip install -e -U . --process-dependency-links --allow-all-external || die 1 "invenio install failed"
+pip install -e -U . --process-dependency-links --allow-all-external
 pip install -r requirements-img.txt
 pip install -r requirements-extras.txt
-npm install || die 1 "npm install failed"
-bower install || die 1 "bower install failed"
+npm install
+bower install
 
 cd ../demosite
-pip install -e . || die 1 "demosite install failed"
+pip install -e .
+{%- if grains["fqdn"] == "cds" %}
+npm install
+bower install
+{%- endif %}
 
 cd ../invenio
 
-pybabel compile -fd invenio/base/translations || die 1 "pybabel compile failed"
+pybabel compile -fd invenio/base/translations
 
 inveniomanage config create secret-key
 inveniomanage config set CFG_EMAIL_BACKEND flask.ext.email.backends.console.Mail
@@ -66,6 +80,18 @@ inveniomanage config set CFG_DATABASE_NAME invenio
 inveniomanage config set CFG_DATABASE_USER invenio
 inveniomanage config set CFG_SITE_URL http://0.0.0.0:{{ port }}
 inveniomanage config set DEBUG True
+inveniomanage config set CLEANCSS_BIN `find $PWD/node_modules -iname cleancss | grep \\.bin | head -1`
+inveniomanage config set LESS_BIN `find $PWD/node_modules -iname lessc | grep \\.bin |  head -1`
+{%- if grains["fqdn"] == "cds" %}
+inveniomanage config set LESS_RUN_IN_DEBUG True
+inveniomanage config set REQUIREJS_BIN `find $PWD/node_modules -iname r.js | grep \\.bin | head -1`
+inveniomanage config set REQUIREJS_RUN_IN_DEBUG False
+inveniomanage config set UGLIFYJS_BIN `find $PWD/node_modules -iname uglifyjs | grep \\.bin | head -1`
+inveniomanage config set ASSETS_DEBUG True
+{%- else %}
+inveniomanage config set LESS_RUN_IN_DEBUG False
+inveniomanage config set ASSETS_DEBUG False
+{%- endif %}
 inveniomanage config set COLLECT_STORAGE invenio.ext.collect.storage.link
 
 grunt || die 1 "grunt failed"
