@@ -10,7 +10,7 @@ http://invenio-software.org/wiki/Development/VirtualEnvironments
 
 First, we need to grab the invenio repository and devscripts.
 
-    $ git clone http://invenio-software.org/repo/invenio
+    $ git clone https://github.com/inveniosoftware/invenio
     $ git clone https://github.com/tiborsimko/invenio-devscripts
     $ git clone https://github.com/greut/invenio-vagrant
 
@@ -47,7 +47,7 @@ The service should be running on: http://localhost:8080
 In this setup, you'll have all the three components separate. It's an easy
 setup to be able to work from your machine (and not within the VM).
 
-    $ git clone -b pu https://github.com/jirikuncar/invenio
+    $ git clone -b pu https://github.com/inveniosoftware/invenio
     $ git clone -b pu https://github.com/inveniosoftware/invenio-demosite
     $ git clone https://github.com/greut/invenio-vagrant
 
@@ -73,7 +73,7 @@ Then open your favourite web browser on http://localhost:4000/
 
 This one is very similar to the above one (`next`) but uses another demosite.
 
-    $ git clone -b pu https://github.com/jirikuncar/invenio
+    $ git clone -b pu https://github.com/inveniosoftware/invenio
     $ git clone -b pu https://github.com/CERNDocumentServer/cds-demosite
     $ git clone https://github.com/greut/invenio-vagrant
 
