@@ -31,11 +31,6 @@ else
     workon pu
 fi
 
-workon | grep -q ^pu$
-if [ "$?" -ne "0" ]; then
-    die 1 "virtualenv pu is not set properly"
-fi
-
 cdvirtualenv
 
 mkdir -p src
@@ -56,17 +51,17 @@ cd src/invenio
 mkdir -p $HOME/.config/configstore
 echo optOut: true > $HOME/.config/configstore/insight-bower.yml
 
-pip install -e -U . --process-dependency-links --allow-all-external
-pip install -r requirements-img.txt
-pip install -r requirements-extras.txt
+pip install -r requirements-docs.txt || die 1 "invenio install failed"
 npm install
 bower install
 
 cd ../demosite
-pip install -e .
 {%- if grains["fqdn"] == "cds" %}
+pip install -r requirements.txt
 npm install
 bower install
+{%- else %}
+pip install -e .
 {%- endif %}
 
 cd ../invenio
