@@ -28,6 +28,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     node.vm.hostname = "next"
 
+    node.vm.synced_folder "../webassets", "/home/vagrant/webassets"
     node.vm.synced_folder "../invenio", "/home/vagrant/invenio"
     node.vm.synced_folder "../invenio-demosite", "/home/vagrant/demosite"
     node.vm.synced_folder "salt/roots", "/srv/salt"
@@ -65,8 +66,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     node.vm.network :forwarded_port, guest: 80, host: 8080
     # Apache: invenio-ssl
     node.vm.network :forwarded_port, guest: 443, host: 8443
-
-    node.vm.hostname = "master"
 
     node.vm.synced_folder "../invenio", "/home/vagrant/private/src/invenio"
     node.vm.synced_folder "../invenio-devscripts", "/home/vagrant/private/src/invenio-devscripts"

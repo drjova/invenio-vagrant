@@ -4,7 +4,7 @@
     {%- set port = 4004 -%}
 {%- else -%}
     {%- set module = "invenio_demosite" -%}
-    {%- set port = 4004 -%}
+    {%- set port = 4000 -%}
 {%- endif %}
 
 warn () {
@@ -57,11 +57,10 @@ bower install
 
 cd ../demosite
 {%- if grains["fqdn"] == "cds" %}
-pip install -r requirements.txt
-npm install
+pip install -r requirements.txt || die 1 "demosite install failed"
 bower install
 {%- else %}
-pip install -e .
+pip install -e . || die 1 "demosite install failed"
 {%- endif %}
 
 cd ../invenio
@@ -81,6 +80,7 @@ inveniomanage config set LESS_BIN `find $PWD/node_modules -iname lessc | grep \\
 inveniomanage config set LESS_RUN_IN_DEBUG True
 inveniomanage config set REQUIREJS_BIN `find $PWD/node_modules -iname r.js | grep \\.bin | head -1`
 inveniomanage config set REQUIREJS_RUN_IN_DEBUG False
+inveniomanage config set REQUIREJS_CONFIG js/build.js
 inveniomanage config set UGLIFYJS_BIN `find $PWD/node_modules -iname uglifyjs | grep \\.bin | head -1`
 inveniomanage config set ASSETS_DEBUG True
 {%- else %}
@@ -107,5 +107,3 @@ inveniomanage demosite populate --packages={{ module  }}.base
 redis-cli flushdb
 
 pkill -TERM -P $INVENIO_PID
-
-deactivate

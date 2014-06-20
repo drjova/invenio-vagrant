@@ -6,7 +6,6 @@ libraries-pkgs:
             - libmysqlclient-dev
             - libtiff-dev
             - libxml2-dev
-            - libxml2-dev
             - libxslt-dev
             - libwebp-dev
 
