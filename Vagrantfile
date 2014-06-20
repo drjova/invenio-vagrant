@@ -28,7 +28,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     node.vm.hostname = "next"
 
-    node.vm.synced_folder "../webassets", "/home/vagrant/webassets"
     node.vm.synced_folder "../invenio", "/home/vagrant/invenio"
     node.vm.synced_folder "../invenio-demosite", "/home/vagrant/demosite"
     node.vm.synced_folder "salt/roots", "/srv/salt"
