@@ -60,7 +60,7 @@ cd ../demosite
 pip install -r requirements.txt || die 1 "demosite install failed"
 bower install
 {%- else %}
-pip install -e . || die 1 "demosite install failed"
+pip install -r requirements.txt --exists-action i || die 1 "demosite install failed"
 {%- endif %}
 
 cd ../invenio
